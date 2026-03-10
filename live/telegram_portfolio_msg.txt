@@ -1,0 +1,50 @@
+📊 BTC OPTIONS PORTFOLIO — TESTNET
+⏰ 2026-03-09 05:41 UTC
+₿ BTC: $67,666
+
+💰 ACCOUNT
+  Balance: 100.4359 BTC
+  Equity: 99.9891 BTC
+  Margin: 4.0528 BTC
+  Available: 96.3831 BTC
+  Options P&L: -0.006880 BTC
+
+📈 POSITIONS (12)
+  🔴 L 0.1 BTC-20MAR26-60000-P
+     P&L: -0.000028 BTC ($-2)
+  🔴 S 0.3 BTC-20MAR26-67000-C
+     P&L: -0.000991 BTC ($-67)
+  🔴 S 1.5 BTC-20MAR26-68000-C
+     P&L: -0.000431 BTC ($-29)
+  🟢 S 1.0 BTC-20MAR26-68000-P
+     P&L: +0.000590 BTC ($+40)
+  🔴 S 0.1 BTC-20MAR26-70000-C
+     P&L: -0.000256 BTC ($-17)
+  🔴 S 2.1 BTC-20MAR26-71000-C
+     P&L: -0.001184 BTC ($-80)
+  🔴 S 1.5 BTC-20MAR26-73000-C
+     P&L: -0.000819 BTC ($-55)
+  🔴 S 1.5 BTC-24APR26-68000-C
+     P&L: -0.000385 BTC ($-26)
+  🔴 S 2.1 BTC-24APR26-72000-C
+     P&L: -0.002192 BTC ($-148)
+  🔴 S 1.5 BTC-24APR26-74000-C
+     P&L: -0.000709 BTC ($-48)
+  🔴 L 1.5 BTC-27MAR26-58000-P
+     P&L: -0.000099 BTC ($-7)
+  🔴 S 0.2 BTC-27MAR26-71000-C
+     P&L: -0.000374 BTC ($-25)
+
+📐 GREEKS
+  Delta: -4.0144
+  Theta: +932.771800/day ($+63,117,403/d)
+  Vega: -713.8551
+
+📋 ORDERS: 37 resting
+
+🎯 SIZING ENGINE
+  Iron Condors: 1.5 BTC/leg (82% conf)
+  Straddles: 1.5 BTC/leg (78% conf)
+  Strangles: 1.1 BTC/leg (73% conf)
+  Jade Lizards: 0.7 BTC/leg (58% conf)
+  BWB: 0.9 BTC/leg (56% conf)
