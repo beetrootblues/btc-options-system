@@ -1,0 +1,111 @@
+==============================================================================
+  BTC OPTIONS QUANTITATIVE TRADING SYSTEM - FINAL PERFORMANCE REPORT
+==============================================================================
+  Generated: 2026-03-09 | Backtest: 2014-09-17 to 2026-03-08 (11.5 years)
+  Initial Capital: $100.00
+
+------------------------------------------------------------------------------
+  1. EXECUTIVE SUMMARY
+------------------------------------------------------------------------------
+
+  This system is a quantitative BTC options framework built on a critical
+  insight: Bitcoin's VRP is NEGATIVE 78% of days -- options are systematically
+  underpriced vs realized vol. The system deploys 4 decorrelated strategies
+  biased toward vol buying, with selective selling only in CRISIS regimes.
+
+  PRODUCTION CONFIG: $121.11 final | +13.90% return | 1.14% CAGR | 0.24 Sharpe | 11.86% max DD
+
+------------------------------------------------------------------------------
+  2. THREE-WAY PERFORMANCE COMPARISON
+------------------------------------------------------------------------------
+
+  Metric                         Frictionless     + Friction    + Fric&Risk
+  ---------------------------- -------------- -------------- --------------
+  Total Return %                      +51.32%        +21.11%        +13.90%
+  CAGR %                               +3.68%         +1.68%         +1.14%
+  Sharpe                                 0.64           0.32           0.24
+  Sortino                                0.16           0.11           0.08
+  Calmar                                 0.35           0.15           0.10
+  Max Drawdown %                      +10.57%        +11.57%        +11.86%
+  Longest DD (days)                      1291           1931           1932
+  CVaR 95% (ann)                       -2.76%         -3.62%         -3.51%
+  Best Month %                        +10.60%        +10.10%        +10.10%
+  Worst Month %                        -3.41%         -4.27%         -4.27%
+  % Positive Months                   +26.62%        +21.58%        +21.58%
+
+------------------------------------------------------------------------------
+  3. MONTHLY RETURN DISTRIBUTION (Production Config)
+------------------------------------------------------------------------------
+
+  Mean: +0.096% | Median: +0.000% | StdDev: 1.482%
+  Skewness: +2.975 | Kurtosis: +18.302
+
+  [-10.0%, -5.0%)  (0)
+  [ -5.0%, -2.0%) ###### (6)
+  [ -2.0%, -1.0%) ## (2)
+  [ -1.0%, +0.0%) ##################################################### (53)
+  [ +0.0%, +1.0%) ################################################################### (67)
+  [ +1.0%, +2.0%) ### (3)
+  [ +2.0%, +5.0%) ##### (5)
+  [ +5.0%,+10.0%) ## (2)
+
+------------------------------------------------------------------------------
+  4. STRATEGY ATTRIBUTION (Production Config)
+------------------------------------------------------------------------------
+
+  Strategy                             Trades      WR       PnL$      PF   Sharpe
+  ----------------------------------- ------- ------- ---------- ------- --------
+  Iron Condor (CRISIS)                      0   0.0%    +0.0000    0.00     0.00
+  Momentum Breakout                        17  64.7%   +21.2309    1.54     1.13
+  Event Vol                                38  31.6%   +21.1057    1.53     0.67
+  Mean Reversion                           51  64.7%   +15.6207    2.42     1.40
+
+  Iron Condor (CRISIS):
+    No trades (margin-killed on $100 capital)
+
+  Momentum Breakout:
+    17 trades | 11W/6L | AvgWin $2.2499 | AvgLoss $2.6775 | W/L Ratio 0.84
+    Exits: {'stop_loss': 5, 'partial_exit_200pct': 5, 'take_profit': 3, 'time_stop': 2, 'trailing_stop': 2}
+
+  Event Vol:
+    38 trades | 12W/26L | AvgWin $1.7093 | AvgLoss $0.5155 | W/L Ratio 3.32
+    Exits: {'time_stop': 31, 'take_profit': 4, 'stop_loss': 3}
+
+  Mean Reversion:
+    51 trades | 33W/18L | AvgWin $0.8147 | AvgLoss $0.6161 | W/L Ratio 1.32
+    Exits: {'time_stop': 47, 'stop_loss': 3, 'take_profit': 1}
+
+------------------------------------------------------------------------------
+  5. RISK ANALYSIS
+------------------------------------------------------------------------------
+
+  Top 3 Drawdown Periods:
+    #1: 11.86% | 2015-09-25 -> 2018-11-10 -> 2021-01-08 (1932d)
+    #2: 5.19% | 2024-01-11 -> 2025-03-02 -> 2025-10-18 (646d)
+    #3: 3.15% | 2021-02-09 -> 2022-11-08 -> 2023-01-19 (709d)
+
+  Risk Manager: 0 rejected, 0 scaled
+  Rejections: None
+
+  Friction: Fees $6.05 | Spread $2.38 | Slip $13.30 | Total $21.73
+  Margin Kills: 24
+
+------------------------------------------------------------------------------
+  6. SYSTEM ARCHITECTURE
+------------------------------------------------------------------------------
+
+  strategies.py (~2,500 lines): BS Pricing -> DataClasses -> 4 Strategies
+    -> FrictionModel -> WolverineRiskManager -> PortfolioAllocator -> main()
+  Data: btc_master_dataset.csv (4,191 rows x 91 features)
+
+------------------------------------------------------------------------------
+  7. PRODUCTION READINESS
+------------------------------------------------------------------------------
+
+  READY: 4 strategies, friction model, risk mgmt, half-Kelly sizing, 11.5yr backtest
+  NEEDS: Live Deribit API, real IV surface, proper Greeks, order execution layer
+  NEXT: Phase 6 (live signals) -> Phase 7 (execution engine)
+
+==============================================================================
+  END OF REPORT
+==============================================================================
