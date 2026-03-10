@@ -1,0 +1,32 @@
+<b>BTC Options Signal Monitor v2.0</b>
+<i>2026-03-09 12:16 UTC</i>
+
+🟡 <b>Market Snapshot</b>
+  BTC: <b>$67,904.09</b>
+  Regime: <b>MEDIUM</b>
+  RV(30d): 53.0% | IV(30d): 60.0%
+  VRP: 6.9% (z=-3.79)
+  RSI(14): 59.7 (Neutral)
+  VoV(30d): 0.2043
+  ATR(14): $3,541
+  5d Return: -5.8%
+  RV Percentile: 52%
+
+🔔 <b>1 Signal(s) Detected</b>
+
+🟡 <b>Signal 1: C_EventVol_PostEvent_LongStraddle</b>
+  Type: long_straddle | Dir: LONG
+  Buy straddle @ 67900, post-event vol recovery, 21 DTE
+
+  <b>Confidence:</b> <code>[======----]</code> 64/100 (MEDIUM)
+  <b>Size:</b> 0.87 BTC ($58,940.75)
+  Max Loss: $10,607.57
+  Expiry: 2026-03-30
+  <i>IV:45 | VRP:95 | Reg:80 | Tech:40 | VoV:35 | Theta:80</i>
+  <i>Score 64/100 (MEDIUM) -> 0.87 BTC | IV:45 VRP:95 Reg:80 Tech:40 VoV:35 Theta:80</i>
+  Legs: BUY CALL @ 67,900 | BUY PUT @ 67,900
+  Conditions:
+    - Recent regime transition to MEDIUM (4d ago)
+    - Post-event vol buying opportunity
+
+<i>Equity: $100.00 | Engine v2.0</i>
