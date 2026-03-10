@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-03-09T12:16:17.582424+00:00",
+  "btc_price": 67904.09,
+  "market_snapshot": {
+    "timestamp": "2026-03-09T12:16:17.582029+00:00",
+    "btc_price": 67904.09,
+    "rv_cc_30d": 0.5305,
+    "rv_cc_7d": 0.5021,
+    "iv_30d": 0.5999,
+    "vrp_30d": 0.0694,
+    "vrp_zscore": -3.79,
+    "vov_30d": 0.2043,
+    "vov_5d_avg": 0.2214,
+    "rsi_14": 59.7,
+    "ret_5d": -0.0578,
+    "ret_10d": 0.0648,
+    "sma_50": 73464.49,
+    "sma_200": 83857.75,
+    "atr_14": 3540.54,
+    "regime": "MEDIUM",
+    "days_in_regime": 4,
+    "rv_percentile": 51.6
+  },
+  "signal_count": 1,
+  "signals": [
+    {
+      "strategy_name": "C_EventVol_PostEvent_LongStraddle",
+      "signal_type": "long_straddle",
+      "direction": "long",
+      "description": "Buy straddle @ 67900, post-event vol recovery, 21 DTE",
+      "confidence": "MEDIUM",
+      "suggested_instrument": "BTC-67900-Straddle",
+      "suggested_strike": 67900.0,
+      "suggested_expiry": "2026-03-30",
+      "option_type": "straddle",
+      "suggested_size_btc": 0.868,
+      "max_loss_usd": 10607.57,
+      "legs": [
+        {
+          "type": "call",
+          "strike": 67900.0,
+          "direction": "buy"
+        },
+        {
+          "type": "put",
+          "strike": 67900.0,
+          "direction": "buy"
+        }
+      ],
+      "conditions_met": [
+        "Recent regime transition to MEDIUM (4d ago)",
+        "Post-event vol buying opportunity"
+      ],
+      "confidence_score": 64.2,
+      "confidence_label": "MEDIUM",
+      "sizing_factors": {
+        "iv_environment": 45.0,
+        "vrp_edge": 95.0,
+        "regime_alignment": 80.0,
+        "technical_confluence": 40.0,
+        "vov_confirmation": 35.0,
+        "theta_profile": 80.0
+      },
+      "size_rationale": "Score 64/100 (MEDIUM) -> 0.87 BTC | IV:45 VRP:95 Reg:80 Tech:40 VoV:35 Theta:80"
+    }
+  ],
+  "portfolio": {
+    "summary": {
+      "open_positions": 0,
+      "closed_positions": 0,
+      "total_invested_usd": 0,
+      "unrealized_pnl_usd": 0,
+      "realized_pnl_usd": 0,
+      "total_pnl_usd": 0
+    },
+    "open_positions": []
+  },
+  "equity": 100.0
+}
