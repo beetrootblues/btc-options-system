@@ -1,0 +1,210 @@
+================================================================================
+  BTC OPTIONS QUANTITATIVE TRADING SYSTEM - PHASE 1: DATA FOUNDATION REPORT
+================================================================================
+  Generated: 2026-03-08 13:18:13 UTC
+  System: btc_options_system/
+
+================================================================================
+  1. DATASET OVERVIEW
+================================================================================
+  Date Range:        2014-09-17 to 2026-03-08
+  Total Trading Days: 4,191
+  Years of Data:     11.5
+  Total Columns:     49
+  Missing Data:      Minimal (only warmup periods for rolling indicators)
+
+  Price Range:
+    All-Time Low:    $      178.10 (2015-01-14)
+    All-Time High:   $  124,752.53 (2025-10-06)
+    Current:         $   67,238.49 (2026-03-08)
+    Total Return:      14,602.3%
+
+  Files Generated:
+    btc_daily_ohlcv.csv                    345 KB  (OHLCV price data)
+    btc_volatility_metrics.csv            1908 KB  (24 vol metrics)
+    btc_vol_regimes.csv                    165 KB  (regime classifications)
+    btc_technical_indicators.csv          1249 KB  (18 tech indicators)
+    btc_master_dataset.csv                3412 KB  (49-col merged master)
+
+================================================================================
+  2. ANNUALIZED RETURN BY YEAR
+================================================================================
+    Year         Start           End      Return      Max DD   30d Vol Avg
+  ------  ------------  ------------  ----------  ----------  ------------
+    2014  $       457  $       320      -30.0%      -32.1%         61.2%
+    2015  $       314  $       431      +37.0%      -43.5%         62.1%
+    2016  $       434  $       964     +121.9%      -28.6%         42.9%
+    2017  $       998  $    14,156    +1318.0%      -35.5%         84.5%
+    2018  $    13,657  $     3,743      -72.6%      -81.5%         78.7%
+    2019  $     3,844  $     7,194      +87.2%      -49.0%         65.2%
+    2020  $     7,200  $    29,002     +302.8%      -51.9%         64.7%
+    2021  $    29,374  $    46,306      +57.6%      -53.1%         78.0%
+    2022  $    47,687  $    16,547      -65.3%      -66.9%         62.8%
+    2023  $    16,625  $    42,265     +154.2%      -20.1%         41.4%
+    2024  $    44,167  $    93,429     +111.5%      -26.2%         51.5%
+    2025  $    94,420  $    87,509       -7.3%      -32.1%         41.1%
+    2026  $    88,732  $    67,238      -24.2%      -35.3%         54.6%
+
+================================================================================
+  3. VOLATILITY REGIME DISTRIBUTION
+================================================================================
+
+  3a. Threshold-Based Regimes (percentile boundaries on 30-day CC realized vol)
+      LOW:    < 25th pctile (< 41.57%)
+      MEDIUM: 25th-60th pctile (41.57% - 62.83%)
+      HIGH:   60th-85th pctile (62.83% - 86.76%)
+      CRISIS: > 85th pctile (> 86.76%)
+
+      Regime    Days  % of Total    Avg 30d RV   Avg Daily Ret   Ann Return
+  ----------  ------  ----------  ------------  --------------  -----------
+         LOW    1040       25.0%       31.46%       0.002494       +91.0%
+      MEDIUM    1456       35.0%       51.43%       0.000827       +30.2%
+        HIGH    1040       25.0%       73.35%       0.001044       +38.1%
+      CRISIS     625       15.0%      112.29%       0.000458       +16.7%
+
+  3b. HMM-Based Regimes (4-state Gaussian Hidden Markov Model on log returns)
+
+      Regime    Days  % of Total    Avg 30d RV   Avg Daily Ret   Ann Return
+  ----------  ------  ----------  ------------  --------------  -----------
+         LOW    1546       37.2%       41.69%       0.000691       +25.2%
+      MEDIUM     261        6.3%       46.46%       0.002897      +105.7%
+        HIGH    2189       52.6%       73.88%       0.002942      +107.4%
+      CRISIS     165        4.0%       95.57%      -0.018754      -684.5%
+
+================================================================================
+  4. LARGEST DRAWDOWNS (TOP 10)
+================================================================================
+
+    #     Peak Date   Trough Date    Peak Price  Trough Price    Drawdown    Days    Recovery
+  ---  ------------  ------------  ------------  ------------  ----------  ------  ----------
+    1    2017-12-16    2018-12-15  $    19,497  $     3,237     -83.4%    364d      710.0d
+    2    2021-11-08    2022-11-21  $    67,567  $    15,787     -76.6%    378d      469.0d
+    3    2014-09-17    2015-01-14  $       457  $       178     -61.1%    119d      331.0d
+    4    2021-04-13    2021-07-20  $    63,503  $    29,807     -53.1%     98d       91.0d
+    5    2025-10-06    2026-02-05  $   124,753  $    62,702     -49.7%    122d        nand
+    6    2017-09-01    2017-09-14  $     4,892  $     3,155     -35.5%     13d       27.0d
+    7    2017-06-11    2017-07-16  $     2,958  $     1,930     -34.8%     35d       20.0d
+    8    2017-01-04    2017-01-11  $     1,155  $       778     -32.6%      7d       43.0d
+    9    2016-06-16    2016-08-02  $       766  $       547     -28.6%     47d      108.0d
+   10    2025-01-21    2025-04-08  $   106,146  $    76,272     -28.1%     77d       32.0d
+
+================================================================================
+  5. VOLATILITY ESTIMATOR CORRELATIONS (30-day window)
+================================================================================
+
+                          CC  Parkinson Garman-Klass   Yang-Zhang
+  --------------- ---------- ---------- ------------ ------------
+      Close-Close     1.0000     0.9467       0.8961       0.8982
+        Parkinson     0.9467     1.0000       0.9910       0.9907
+     Garman-Klass     0.8961     0.9910       1.0000       0.9989
+       Yang-Zhang     0.8982     0.9907       0.9989       1.0000
+
+  Key finding: Garman-Klass and Yang-Zhang are nearly identical (r=0.999)
+  Parkinson and CC have the lowest correlation (r=0.947), as expected
+
+================================================================================
+  6. REGIME TRANSITION MATRIX (Threshold-Based)
+================================================================================
+
+  Probability of transitioning from row regime to column regime (next day)
+
+   From / To       LOW    MEDIUM      HIGH    CRISIS
+  ----------  --------  --------  --------  --------
+         LOW    95.8%     4.1%     0.1%     0.0%
+      MEDIUM     3.0%    93.2%     3.8%     0.1%
+        HIGH     0.1%     5.4%    91.6%     2.9%
+      CRISIS     0.0%     0.2%     4.8%    95.0%
+
+  Interpretation: Regimes are highly persistent (diagonal dominance)
+  Transitions happen gradually through adjacent regimes
+
+================================================================================
+  7. KEY STATISTICS TABLE
+================================================================================
+
+  Metric                                             Value
+  ---------------------------------------- ---------------
+  Total Observations                                 4,191
+  Date Range                                    11.5 years
+  Annualized Return (log)                            43.5%
+  Annualized Volatility (CC)                         67.6%
+  Sharpe Ratio (rf=0%)                               0.643
+  Skewness (daily returns)                          -0.709
+  Excess Kurtosis (daily returns)                   11.713
+  Max Daily Gain                                     22.5%
+  Max Daily Loss                                    -46.5%
+  Max Drawdown (all-time)                           -83.4%
+  Avg 30-day Realized Vol                            61.1%
+  Median 30-day Realized Vol                         55.4%
+  Days in LOW vol regime                             1,040
+  Days in CRISIS vol regime                            625
+  Parkinson-CC Vol Correlation                      0.9467
+  Current Price                                 $67,238.49
+  Current 30d RV                                     49.9%
+  Current Regime (Threshold)                        MEDIUM
+  Current Regime (HMM)                                HIGH
+  Current RSI(14)                                     44.5
+  Current 90d Sharpe                                 -2.11
+
+================================================================================
+  8. VOLATILITY METRICS SUMMARY (Mean Annualized Vol by Estimator & Window)
+================================================================================
+
+    Window   Close-Close     Parkinson  Garman-Klass    Yang-Zhang
+  --------  ------------  ------------  ------------  ------------
+      7d          56.7%        55.3%        54.0%        54.4%
+     14d          59.0%        56.8%        55.3%        55.9%
+     21d          60.1%        57.6%        56.1%        56.7%
+     30d          61.1%        58.3%        56.8%        57.5%
+     60d          62.7%        59.5%        58.0%        58.7%
+     90d          63.5%        60.2%        58.7%        59.5%
+
+  Note: Shorter windows show lower average vol due to mean-reversion in vol
+  Garman-Klass is the most efficient estimator (lowest variance)
+
+================================================================================
+  9. DATA QUALITY & METHODOLOGY NOTES
+================================================================================
+
+  Data Sources:
+    - Primary: Yahoo Finance (yfinance) BTC-USD daily OHLCV
+    - Coverage: 2014-09-17 to 2026-03-08 (4,191 trading days)
+    - Binance/ccxt: unavailable (geo-restriction)
+    - CoinGecko: unavailable (API auth/rate limiting)
+
+  Volatility Estimators:
+    - Close-to-Close: Standard, uses only closing prices
+    - Parkinson: Uses high-low range, ~5x more efficient than CC
+    - Garman-Klass: Uses OHLC, most efficient classical estimator
+    - Yang-Zhang: Handles overnight jumps, combines 3 components
+    - All annualized using sqrt(365) for 24/7 crypto markets
+
+  Regime Classification:
+    - Threshold: Percentile-based on 30d CC realized vol
+    - HMM: 4-state Gaussian HMM fitted on daily log returns
+    - Agreement rate between methods: ~46%
+    - HMM captures return dynamics; threshold captures vol levels
+
+  Technical Indicators:
+    - RSI(14), Bollinger Bands(20,2), SMA(50/200) crossover
+    - MACD(12,26,9), ATR(14), Volume ratio, 90d drawdown/Sharpe
+
+================================================================================
+  10. PHASE 1 COMPLETION STATUS & PHASE 2 READINESS
+================================================================================
+
+  [COMPLETE] Step 1: BTC Historical OHLCV Data (4,191 days, 11.5 years)
+  [COMPLETE] Step 2: 24 Volatility Metrics (4 estimators x 6 windows)
+  [COMPLETE] Step 3: Regime Classification (threshold + HMM, 4 states)
+  [COMPLETE] Step 4: 18 Technical Indicators (momentum, trend, vol)
+  [COMPLETE] Step 5: Master Dataset (49 columns, date-aligned)
+  [COMPLETE] Step 6: Summary Report (this file)
+
+  Ready for Phase 2: Options Pricing Model Implementation
+    - Volatility surface calibration using regime-aware vol estimates
+    - Black-Scholes / SABR model with regime-conditional parameters
+    - Greeks computation with Yang-Zhang vol as input
+
+================================================================================
+  END OF PHASE 1 DATA FOUNDATION REPORT
+================================================================================
