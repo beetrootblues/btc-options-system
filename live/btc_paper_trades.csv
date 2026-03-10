@@ -1,0 +1,2 @@
+trade_id,timestamp,strategy,instrument,direction,size_btc,entry_price_btc,entry_price_usd,strike,expiry,option_type,stop_loss_price,take_profit_price,status,exit_price_usd,exit_timestamp,pnl_usd,exit_reason,order_id,execution_mode
+PAPER-20260309-0001,2026-03-09T05:15:24.673751Z,integration_test,BTC-12MAR26-67000-C,buy,0.1,0.0078,523.689816,67000.0,2026-03-12,call,0,0,open,0.0,,0.0,,86853249511,testnet
