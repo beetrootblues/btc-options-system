@@ -25,7 +25,7 @@ except ImportError:
 class SystemMonitor:
     """Main system monitor: scans market, generates reports, formats messages."""
 
-    def __init__(self, equity: float = 100.0, lookback_days: int = 120, execute: bool = False):
+    def __init__(self, equity: float = 100.0, lookback_days: int = 120):
         self.equity = equity
         self.signal_engine = DeribitSignalEngine(
             lookback_days=lookback_days,
@@ -52,12 +52,9 @@ class SystemMonitor:
             'btc_price': snapshot.btc_price,
             'market_snapshot': snapshot.to_dict(),
             'signal_count': len(signals),
-            'total_signal_count': len(signals),
             'signals': [s.to_dict() for s in signals],
             'portfolio': self._get_portfolio_summary(snapshot.btc_price),
             'equity': self.equity,
-            'profit_evaluation': {'exit_count': 0},
-            'executions': [],
         }
 
         # Save report to file
@@ -125,11 +122,11 @@ class SystemMonitor:
 
         # Regime emoji mapping
         regime_icon = {
-            'LOW': '\U0001f7e2',
-            'MEDIUM': '\U0001f7e1',
-            'HIGH': '\U0001f7e0',
-            'CRISIS': '\U0001f534',
-        }.get(regime, '\u26aa')
+            'LOW': '🟢',
+            'MEDIUM': '🟡',
+            'HIGH': '🟠',
+            'CRISIS': '🔴',
+        }.get(regime, '⚪')
 
         # RSI condition
         if rsi > 70:
@@ -159,11 +156,11 @@ class SystemMonitor:
 
         # Signals
         if signals:
-            lines.append(f'\U0001f514 <b>{len(signals)} Signal(s) Detected</b>')
+            lines.append(f'🔔 <b>{len(signals)} Signal(s) Detected</b>')
             lines.append('')
             for i, sig in enumerate(signals, 1):
-                conf_icon = {'HIGH': '\U0001f7e2', 'MEDIUM': '\U0001f7e1', 'LOW': '\U0001f535'}.get(
-                    sig.get('confidence', ''), '\u26aa')
+                conf_icon = {'HIGH': '🟢', 'MEDIUM': '🟡', 'LOW': '🔵'}.get(
+                    sig.get('confidence', ''), '⚪')
                 lines.append(f'{conf_icon} <b>Signal {i}: {sig["strategy_name"]}</b>')
                 lines.append(f'  Type: {sig["signal_type"]}')
                 lines.append(f'  Direction: {sig["direction"].upper()}')
@@ -195,10 +192,10 @@ class SystemMonitor:
                         lines.append(f'    - {c}')
                 lines.append('')
         else:
-            lines.append('\U0001f4ca <b>No Active Signals</b>')
+            lines.append('📊 <b>No Active Signals</b>')
             lines.append('  All 4 strategies checked - no entry conditions met.')
 
-            # Show why each strategy didn\'t trigger
+            # Show why each strategy didn't trigger
             reasons = []
             if regime != 'CRISIS':
                 reasons.append(f'A (Iron Condor): Need CRISIS regime, got {regime}')
@@ -229,7 +226,7 @@ class SystemMonitor:
         open_pos = summary.get('open_positions', 0)
         total_pnl = summary.get('total_pnl_usd', 0)
         if open_pos > 0:
-            lines.append(f'\U0001f4bc <b>Portfolio</b>')
+            lines.append(f'💼 <b>Portfolio</b>')
             lines.append(f'  Open: {open_pos} | PnL: ${total_pnl:+,.2f}')
             for pos in portfolio.get('open_positions', []):
                 lines.append(
@@ -238,6 +235,6 @@ class SystemMonitor:
                 )
             lines.append('')
 
-        lines.append(f'<i>Equity: ${report.get("equity", 0):,.2f}</i>')
+        lines.append(f'<i>Equity: {report.get("equity", 0):,.2f} BTC (~${report.get("equity", 0) * report.get("btc_price", 70000):,.0f})</i>')
 
         return '\n'.join(lines)
