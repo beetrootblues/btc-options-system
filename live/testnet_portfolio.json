@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-03-09T05:31:00Z",
+  "btc_price": 67440,
+  "account": {
+    "balance": 100.0203,
+    "equity": 99.9989,
+    "margin_used": 0.1985,
+    "available": 99.8219,
+    "pnl": -0.000858
+  },
+  "positions_count": 11,
+  "active_positions": 4,
+  "open_orders": 9,
+  "net_greeks": {
+    "delta": -0.2915,
+    "theta": 59.5818,
+    "vega": -26.983
+  },
+  "strategies": [
+    "Iron Condor",
+    "Short Straddle",
+    "Call Butterfly",
+    "Calendar Spread",
+    "Ratio Spread",
+    "Naked Put"
+  ]
+}
