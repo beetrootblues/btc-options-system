@@ -1,0 +1,13 @@
+position_id,instrument,strategy,direction,size_btc,entry_price,current_pnl_btc,current_pnl_usd,confidence_score,status
+POS-001,BTC-20MAR26-71000-C,Broken Wing Butterfly,net_long,1.4,0.0205,0.007641,517.06,0.547,active
+POS-002,BTC-24APR26-72000-C,Broken Wing Butterfly,net_long,1.4,0.0475,0.002625,177.59,0.613,active
+POS-003,BTC-24APR26-62000-P,Iron Condor,net_short,3.0,0.04,-0.005255,-355.57,0.812,active
+POS-004,BTC-27MAR26-62500-P,Iron Condor,net_short,3.0,0.03135,0.014131,956.2,0.843,partial
+POS-005,BTC-20MAR26-62000-P,Jade Lizard,net_short,1.4,0.01775,0.012372,837.17,0.562,active
+POS-006,BTC-24APR26-62000-P,Jade Lizard,net_short,1.4,0.04475,0.001623,109.79,0.628,active
+POS-007,BTC-27MAR26-62000-P,Jade Lizard,net_short,1.4,0.02625,0.013054,883.3,0.562,active
+POS-008,BTC-20MAR26-68000-C,Short Straddle,net_short,3.0,0.04175,-0.037932,-2566.7,0.755,active
+POS-009,BTC-24APR26-68000-C,Short Straddle,net_short,3.0,0.07575,-0.014157,-957.93,0.755,active
+POS-010,BTC-20MAR26-60000-P,Short Strangle,net_short,2.2,0.009,-0.003606,-243.97,0.705,active
+POS-011,BTC-24APR26-60000-P,Short Strangle,net_short,2.2,0.034,-0.000613,-41.49,0.735,active
+POS-012,BTC-27MAR26-60000-P,Short Strangle,net_short,3.0,0.01525,-0.000783,-53.01,0.755,active
