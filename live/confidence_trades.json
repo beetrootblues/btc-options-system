@@ -1,0 +1,440 @@
+{
+  "timestamp": "2026-03-09T05:40:00.061028+00:00",
+  "btc_price": 67580.5,
+  "total_orders": 42,
+  "filled": 0,
+  "open": 37,
+  "failed": 0,
+  "confidence_range": [
+    0.507,
+    0.843
+  ],
+  "size_range": [
+    0.7,
+    1.5
+  ],
+  "equity_before": 99.99847802,
+  "equity_after": 99.9972411,
+  "trades": [
+    {
+      "num": 1,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-20MAR26-62000-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.015,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 2,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-20MAR26-59000-P",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.0001,
+      "confidence": 0.812,
+      "result": "post_only_price_modification_not_possible"
+    },
+    {
+      "num": 3,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-20MAR26-73000-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0125,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 4,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-20MAR26-76000-C",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.0065,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 5,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-20MAR26-68000-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.039,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 6,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-20MAR26-68000-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0445,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 7,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-20MAR26-62000-P",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.015,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 8,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-20MAR26-71000-C",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.0205,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 9,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-20MAR26-75000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0085,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 10,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-20MAR26-68000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0395,
+      "confidence": 0.547,
+      "result": "open"
+    },
+    {
+      "num": 11,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-20MAR26-71000-C",
+      "side": "sell",
+      "size": 1.4,
+      "price": 0.0205,
+      "confidence": 0.547,
+      "result": "open"
+    },
+    {
+      "num": 12,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-20MAR26-76000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0065,
+      "confidence": 0.547,
+      "result": "open"
+    },
+    {
+      "num": 13,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-20MAR26-60000-P",
+      "side": "sell",
+      "size": 1.1,
+      "price": 0.01,
+      "confidence": 0.705,
+      "result": "open"
+    },
+    {
+      "num": 14,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-20MAR26-75000-C",
+      "side": "sell",
+      "size": 1.1,
+      "price": 0.008,
+      "confidence": 0.705,
+      "result": "open"
+    },
+    {
+      "num": 15,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-27MAR26-62500-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.029,
+      "confidence": 0.843,
+      "result": "open"
+    },
+    {
+      "num": 16,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-27MAR26-58000-P",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.0125,
+      "confidence": 0.843,
+      "result": "open"
+    },
+    {
+      "num": 17,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-27MAR26-72500-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0337,
+      "confidence": 0.843,
+      "result": "Invalid params"
+    },
+    {
+      "num": 18,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-27MAR26-76000-C",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.012,
+      "confidence": 0.843,
+      "result": "open"
+    },
+    {
+      "num": 19,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-27MAR26-67500-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0602,
+      "confidence": 0.815,
+      "result": "Invalid params"
+    },
+    {
+      "num": 20,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-27MAR26-67500-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0581,
+      "confidence": 0.815,
+      "result": "Invalid params"
+    },
+    {
+      "num": 21,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-27MAR26-62000-P",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.0225,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 22,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-27MAR26-71000-C",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.03,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 23,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-27MAR26-75000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.015,
+      "confidence": 0.562,
+      "result": "open"
+    },
+    {
+      "num": 24,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-27MAR26-67500-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0602,
+      "confidence": 0.507,
+      "result": "Invalid params"
+    },
+    {
+      "num": 25,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-27MAR26-70500-C",
+      "side": "sell",
+      "size": 1.4,
+      "price": 0.0405,
+      "confidence": 0.507,
+      "result": "open"
+    },
+    {
+      "num": 26,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-27MAR26-76000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.012,
+      "confidence": 0.507,
+      "result": "open"
+    },
+    {
+      "num": 27,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-27MAR26-60000-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.016,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 28,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-27MAR26-75000-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0145,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 29,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-24APR26-62000-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.042,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 30,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-24APR26-58000-P",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.0275,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 31,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-24APR26-74000-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.038,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 32,
+      "strategy": "Iron Condor",
+      "instrument": "BTC-24APR26-76000-C",
+      "side": "buy",
+      "size": 1.5,
+      "price": 0.0305,
+      "confidence": 0.812,
+      "result": "open"
+    },
+    {
+      "num": 33,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-24APR26-68000-C",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.0735,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 34,
+      "strategy": "Short Straddle",
+      "instrument": "BTC-24APR26-68000-P",
+      "side": "sell",
+      "size": 1.5,
+      "price": 0.078,
+      "confidence": 0.755,
+      "result": "open"
+    },
+    {
+      "num": 35,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-24APR26-62000-P",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.042,
+      "confidence": 0.628,
+      "result": "open"
+    },
+    {
+      "num": 36,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-24APR26-72000-C",
+      "side": "sell",
+      "size": 0.7,
+      "price": 0.0475,
+      "confidence": 0.628,
+      "result": "open"
+    },
+    {
+      "num": 37,
+      "strategy": "Jade Lizard",
+      "instrument": "BTC-24APR26-75000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0345,
+      "confidence": 0.628,
+      "result": "open"
+    },
+    {
+      "num": 38,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-24APR26-68000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.074,
+      "confidence": 0.613,
+      "result": "open"
+    },
+    {
+      "num": 39,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-24APR26-72000-C",
+      "side": "sell",
+      "size": 1.4,
+      "price": 0.0475,
+      "confidence": 0.613,
+      "result": "open"
+    },
+    {
+      "num": 40,
+      "strategy": "Broken Wing Butterfly",
+      "instrument": "BTC-24APR26-76000-C",
+      "side": "buy",
+      "size": 0.7,
+      "price": 0.0305,
+      "confidence": 0.613,
+      "result": "open"
+    },
+    {
+      "num": 41,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-24APR26-60000-P",
+      "side": "sell",
+      "size": 1.1,
+      "price": 0.034,
+      "confidence": 0.735,
+      "result": "open"
+    },
+    {
+      "num": 42,
+      "strategy": "Short Strangle",
+      "instrument": "BTC-24APR26-75000-C",
+      "side": "sell",
+      "size": 1.1,
+      "price": 0.034,
+      "confidence": 0.735,
+      "result": "open"
+    }
+  ]
+}
