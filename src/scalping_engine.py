@@ -125,10 +125,10 @@ class ScalpingEngine:
     INSTRUMENTS_TTL = 300
 
     def __init__(self, equity: float = 100.0, max_signals_per_scan: int = 5,
-                 scalp_size_pct: float = 0.015):
-        self.equity = equity
+                 scalp_size_pct: float = 0.02):
+        self.equity = equity  # In BTC — matches Deribit testnet balance
         self.max_signals_per_scan = max_signals_per_scan
-        self.scalp_size_pct = scalp_size_pct
+        self.scalp_size_pct = scalp_size_pct  # 2% of equity per scalp trade
         self.client = httpx.Client(timeout=15)
         self.cache = DataCache()
         self._scan_count = 0
