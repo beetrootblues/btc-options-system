@@ -92,34 +92,10 @@ class LiveSignal:
     legs: List[Dict]
     # Entry conditions met
     conditions_met: List[str]
+    confidence_score: float = 0.0  # Numeric 0-1 from ConfidenceScorer
 
     def to_dict(self) -> dict:
         return asdict(self)
-
-
-
-class ConfidenceScorer:
-    """Confidence scorer for signal weighting."""
-
-    def __init__(self):
-        self.weights = {
-            'regime_alignment': 0.3,
-            'vrp_signal': 0.2,
-            'momentum_confirm': 0.2,
-            'vol_structure': 0.15,
-            'mean_reversion': 0.15,
-        }
-
-    def score(self, snapshot, signal=None) -> float:
-        """Return a confidence score between 0 and 1."""
-        score = 0.5  # Base score
-        if snapshot.vrp_zscore > 0.5:
-            score += 0.15
-        if snapshot.regime in ('LOW', 'MEDIUM'):
-            score += 0.1
-        if 35 <= snapshot.rsi_14 <= 65:
-            score += 0.1
-        return min(1.0, max(0.0, score))
 
 
 class DeribitSignalEngine:
@@ -789,5 +765,95 @@ class DeribitSignalEngine:
         else:
             print(f'  Strategy D: No signal (RV pctl={snapshot.rv_percentile:.0f}%)')
 
+        # Apply confidence-weighted sizing to each signal
+        scorer = ConfidenceScorer()
+        for sig in signals:
+            conf_score = scorer.score(sig, snapshot)
+            adjusted_size = round(sig.suggested_size_btc * conf_score, 6)
+            adjusted_loss = round(sig.max_loss_usd * conf_score, 2)
+            print(f'\n  Confidence adjustment for {sig.strategy_name}:')
+            print(f'    Base size: {sig.suggested_size_btc:.6f} BTC')
+            print(f'    Confidence score: {conf_score:.4f}')
+            print(f'    Adjusted size: {adjusted_size:.6f} BTC')
+            # Update signal with adjusted values
+            sig.suggested_size_btc = adjusted_size
+            sig.max_loss_usd = adjusted_loss
+            sig.confidence_score = conf_score  # Store numeric score
+
         print(f'\nScan complete: {len(signals)} signal(s) detected')
         return snapshot, signals
+
+
+# ---------------------------------------------------------------------------
+# Confidence Scorer — multi-factor sizing multiplier
+# ---------------------------------------------------------------------------
+class ConfidenceScorer:
+    """Scores signal confidence 0.0-1.0 based on multiple market factors.
+
+    Used as a sizing multiplier: size *= confidence_score
+    This makes position sizes variable based on conviction level.
+    """
+
+    @staticmethod
+    def score(signal, snapshot=None) -> float:
+        """Compute confidence score 0.0-1.0 from signal + market context.
+
+        Factors:
+        1. Base confidence label (HIGH/MEDIUM/LOW) — 40% weight
+        2. VRP alignment — 20% weight  
+        3. Regime duration — 20% weight
+        4. IV/RV convergence — 20% weight
+
+        Returns a score between 0.3 (minimum) and 1.0 (maximum).
+        """
+        # Factor 1: Base confidence from strategy logic (40% weight)
+        conf_map = {'HIGH': 1.0, 'MEDIUM': 0.65, 'LOW': 0.35}
+        if hasattr(signal, 'confidence'):
+            base = conf_map.get(signal.confidence, 0.5)
+        elif isinstance(signal, dict):
+            base = conf_map.get(signal.get('confidence', ''), 0.5)
+        else:
+            base = 0.5
+
+        if snapshot is None:
+            return max(0.3, base)
+
+        # Factor 2: VRP alignment (20% weight)
+        # Positive VRP favors short vol, negative favors long vol
+        direction = getattr(signal, 'direction', None) or (signal.get('direction') if isinstance(signal, dict) else None)
+        vrp = getattr(snapshot, 'vrp_30d', 0) if hasattr(snapshot, 'vrp_30d') else 0
+        if direction == 'short' and vrp > 0:
+            vrp_score = min(1.0, 0.5 + vrp * 5)  # Positive VRP helps shorts
+        elif direction == 'long' and vrp < 0:
+            vrp_score = min(1.0, 0.5 + abs(vrp) * 5)  # Negative VRP helps longs
+        else:
+            vrp_score = 0.4  # Misaligned VRP
+
+        # Factor 3: Regime duration (20% weight)
+        # Longer regime = more confidence for mean-reversion, less for trend
+        days_in = getattr(snapshot, 'days_in_regime', 0) if hasattr(snapshot, 'days_in_regime') else 0
+        strat_name = getattr(signal, 'strategy_name', '') or (signal.get('strategy_name', '') if isinstance(signal, dict) else '')
+        if 'MeanReversion' in strat_name or 'VolSelling' in strat_name:
+            regime_score = min(1.0, 0.4 + days_in * 0.06)  # Longer = better for mean reversion
+        else:
+            regime_score = max(0.3, 1.0 - days_in * 0.05)  # Shorter = better for breakouts
+
+        # Factor 4: IV/RV convergence (20% weight)
+        iv = getattr(snapshot, 'iv_30d', 0) if hasattr(snapshot, 'iv_30d') else 0
+        rv = getattr(snapshot, 'rv_cc_30d', 0) if hasattr(snapshot, 'rv_cc_30d') else 0
+        if rv > 0 and iv > 0:
+            iv_rv_ratio = iv / rv
+            if direction == 'short':
+                # Short vol loves high IV/RV ratio
+                ivr_score = min(1.0, 0.3 + (iv_rv_ratio - 1.0) * 0.7) if iv_rv_ratio > 1.0 else 0.3
+            else:
+                # Long vol prefers low IV/RV (cheap options)
+                ivr_score = min(1.0, 0.3 + (1.0 - iv_rv_ratio) * 1.5) if iv_rv_ratio < 1.0 else 0.4
+        else:
+            ivr_score = 0.5
+
+        # Weighted combination
+        raw = base * 0.40 + vrp_score * 0.20 + regime_score * 0.20 + ivr_score * 0.20
+
+        # Clamp to [0.3, 1.0] — never zero out a signal, never exceed 100%
+        return round(max(0.3, min(1.0, raw)), 4)
