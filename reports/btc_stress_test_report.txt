@@ -1,0 +1,157 @@
+======================================================================
+BTC OPTIONS SYSTEM - STRESS TEST REPORT
+Generated: 2026-03-09
+======================================================================
+
+----------------------------------------------------------------------
+SECTION 1: MONTE CARLO SIMULATION
+----------------------------------------------------------------------
+  Simulations:          10,000
+  Trades per sim:       106
+  Actual trades:        106
+  Win rate:             52.8%
+  Avg trade P&L:        $0.2980
+
+  Terminal Wealth Distribution:
+    5th percentile:     $104.96
+    25th percentile:    $120.61
+    Median:             $131.32
+    Mean:               $131.49
+    75th percentile:    $142.02
+    95th percentile:    $158.38
+
+  Risk Probabilities:
+    P(ruin < $50):      0.00%
+    P(loss < $100):     2.43%
+    P(double >= $200):  0.00%
+    P(10x >= $1000):    0.00%
+    Trades to double:   NEVER
+
+  Max Drawdown Distribution:
+    5th percentile:     3.58%
+    Median:             6.84%
+    Mean:               7.58%
+    95th percentile:    13.94%
+
+  Sharpe Ratio Distribution:
+    5th percentile:     0.1648
+    Median:             0.9702
+    Mean:               0.9569
+    95th percentile:    1.7025
+
+----------------------------------------------------------------------
+SECTION 2: REGIME STRESS TESTS
+----------------------------------------------------------------------
+
+  COVID Crash:
+    Period:           2020-02-15 to 2020-04-15
+    Status:           OK
+    BTC Return:       -32.84%
+    System Return:    +0.9733%
+    Max Drawdown:     0.0171%
+    Sharpe Ratio:     2.8191
+    Trades:           2
+    Start Equity:     $105.1973
+    End Equity:       $106.2211
+    Per-Strategy:
+      D: 2 trades, $+1.0591
+
+  FTX Collapse:
+    Period:           2022-10-01 to 2022-12-31
+    Status:           OK
+    BTC Return:       -14.32%
+    System Return:    -0.7567%
+    Max Drawdown:     0.7567%
+    Sharpe Ratio:     -2.4324
+    Trades:           1
+    Start Equity:     $99.6399
+    End Equity:       $98.8860
+    Per-Strategy:
+      C: 1 trades, $-0.1593
+
+  2018 Bear Market:
+    Period:           2018-01-01 to 2018-12-31
+    Status:           OK
+    BTC Return:       -72.60%
+    System Return:    -1.6505%
+    Max Drawdown:     2.4456%
+    Sharpe Ratio:     -0.6207
+    Trades:           6
+    Start Equity:     $98.1525
+    End Equity:       $96.5325
+    Per-Strategy:
+      D: 5 trades, $-0.8103
+      C: 1 trades, $-0.9092
+
+  2022 Full Bear:
+    Period:           2022-01-01 to 2022-12-31
+    Status:           OK
+    BTC Return:       -65.30%
+    System Return:    -0.5326%
+    Max Drawdown:     1.3139%
+    Sharpe Ratio:     -0.3465
+    Trades:           5
+    Start Equity:     $108.6920
+    End Equity:       $108.1131
+    Per-Strategy:
+      C: 5 trades, $-0.1685
+
+  Bull Run Peak:
+    Period:           2021-01-01 to 2021-05-19
+    Status:           OK
+    BTC Return:       +25.97%
+    System Return:    +8.3213%
+    Max Drawdown:     1.6148%
+    Sharpe Ratio:     1.8776
+    Trades:           5
+    Start Equity:     $99.0794
+    End Equity:       $107.3241
+    Per-Strategy:
+      B: 2 trades, $+5.8552
+      D: 2 trades, $-1.2796
+      C: 1 trades, $-0.3616
+
+----------------------------------------------------------------------
+SECTION 3: CORRELATION STRESS TEST (B <-> D)
+----------------------------------------------------------------------
+
+  Baseline (actual trade sequence):
+    Return:           +31.5877%
+    Max Drawdown:     9.8522%
+    Sharpe:           0.9661
+    Terminal Wealth:  $131.5877
+
+  Forced B-D Correlation (D matches B direction):
+    Return:           +34.6888%
+    Max Drawdown:     9.8043%
+    Sharpe:           1.0650
+    Terminal Wealth:  $134.6888
+
+  Worst Case (all losses concentrated first):
+    Max Drawdown:     30.2664%
+    Min Equity:       $69.7336
+
+  Correlated Monte Carlo (5000 sims):
+    Median Terminal:  $131.1396
+    5th percentile:   $105.3582
+    95th percentile:  $158.2652
+    Median Max DD:    6.8287%
+    95th pctl Max DD: 14.0127%
+    P(ruin < $50):    0.00%
+
+  Degradation from Correlation:
+    DD increase:      -0.0479%
+    Sharpe change:    +0.0989
+    Return change:    +3.1010%
+
+----------------------------------------------------------------------
+CONCLUSIONS & RISK ASSESSMENT
+----------------------------------------------------------------------
+  [LOW RISK] Probability of ruin < 1% -- system is robust
+  [POSITIVE] Median Sharpe 0.97 indicates positive edge
+  Worst regime stress DD: 2.4456% during 2018 Bear Market
+  [OK] Correlation stress impact on DD: -0.0479%
+
+======================================================================
+END OF STRESS TEST REPORT
+======================================================================
