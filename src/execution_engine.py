@@ -13,6 +13,7 @@ import json
 import time
 import csv
 import math
+from copy import deepcopy
 import hmac
 import hashlib
 from datetime import datetime, timedelta
@@ -395,6 +396,187 @@ class DeribitExecutionEngine:
     def cancel_order(self, order_id: str) -> Optional[dict]:
         """Cancel a specific order by ID."""
         return self._private_get('/private/cancel', {'order_id': order_id})
+
+
+    # -----------------------------------------------------------------
+    # Position closing (for profit-taking engine)
+    # -----------------------------------------------------------------
+    def get_position_greeks(self, instrument_name: str) -> Dict[str, float]:
+        """Fetch live Greeks from Deribit public ticker.
+
+        Returns dict with: delta, gamma, theta, vega, mark_iv, mark_price,
+        best_bid, best_ask, underlying_price.
+        """
+        result = self._public_get('/public/ticker', {
+            'instrument_name': instrument_name
+        })
+        if not result:
+            return {'delta': 0, 'gamma': 0, 'theta': 0, 'vega': 0,
+                    'mark_iv': 0, 'mark_price': 0, 'best_bid': 0,
+                    'best_ask': 0, 'underlying_price': 0}
+        greeks = result.get('greeks', {})
+        return {
+            'delta': greeks.get('delta', 0),
+            'gamma': greeks.get('gamma', 0),
+            'theta': greeks.get('theta', 0),
+            'vega': greeks.get('vega', 0),
+            'mark_iv': result.get('mark_iv', 0) / 100.0,
+            'mark_price': result.get('mark_price', 0),
+            'best_bid': result.get('best_bid_price', 0) or 0,
+            'best_ask': result.get('best_ask_price', 0) or 0,
+            'underlying_price': result.get('underlying_price', 0),
+        }
+
+    def close_position(self, trade_id: str, size_fraction: float = 1.0,
+                       reason: str = 'profit_engine') -> Optional[Dict]:
+        """Close (or partially close) an open position.
+
+        Finds the paper trade by trade_id, places a closing order on Deribit
+        testnet (opposite side), and updates local paper trade records.
+
+        For buys: places a sell order.
+        For sells: places a buy order.
+        Supports partial exits (size_fraction < 1.0) by splitting the trade.
+
+        Args:
+            trade_id: Paper trade ID to close
+            size_fraction: 1.0 = full close, 0.5 = close half, etc.
+            reason: Why this position is being closed
+
+        Returns:
+            Dict with close details, or None on failure.
+        """
+        # Find the open position
+        target = None
+        for pos in self.open_positions:
+            if pos.trade_id == trade_id:
+                target = pos
+                break
+
+        if not target:
+            print(f'  CLOSE ERROR: trade_id {trade_id} not found in open positions')
+            return None
+
+        close_size = round(target.size_btc * size_fraction, 6)
+        if close_size <= 0:
+            print(f'  CLOSE ERROR: computed close size is 0')
+            return None
+
+        # Determine closing side (opposite of entry)
+        close_side = 'sell' if target.direction == 'buy' else 'buy'
+
+        # Get current market price for the instrument
+        greeks = self.get_position_greeks(target.instrument)
+        mark_price = greeks.get('mark_price', 0)
+
+        # Use best bid/ask for more realistic exit price
+        if close_side == 'sell':
+            exit_price_btc = greeks.get('best_bid', mark_price) or mark_price
+        else:
+            exit_price_btc = greeks.get('best_ask', mark_price) or mark_price
+
+        if exit_price_btc <= 0:
+            exit_price_btc = target.entry_price_btc  # Fallback
+
+        # Get BTC price for USD conversion
+        btc_result = self._public_get('/public/get_index_price', {'index_name': 'btc_usd'})
+        btc_price = btc_result.get('index_price', 70000) if btc_result else 70000
+        exit_price_usd = exit_price_btc * btc_price
+
+        order_id = ''
+        exec_mode = 'paper'
+
+        # --- Place closing order on testnet ---
+        if not self.paper_mode:
+            self._ensure_auth()
+            if self.access_token:
+                aligned_price = self._align_price_to_tick(exit_price_btc, target.instrument)
+                params = {
+                    'instrument_name': target.instrument,
+                    'amount': close_size,
+                    'type': 'limit',
+                    'price': aligned_price,
+                    'post_only': 'true',
+                    'time_in_force': 'good_til_cancelled',
+                }
+                result = self._private_get(f'/private/{close_side}', params=params)
+                if result:
+                    order = result.get('order', {})
+                    order_id = str(order.get('order_id', ''))
+                    exec_mode = 'testnet' if self.testnet else 'live'
+                    print(f'  CLOSE ORDER: {order_id} {close_side} {target.instrument} '
+                          f'size={close_size:.4f} BTC @ {exit_price_btc:.6f} BTC')
+                else:
+                    print(f'  CLOSE ORDER FAILED -- paper fallback')
+            else:
+                print(f'  NOT AUTHENTICATED -- paper close only')
+
+        # --- Update paper trade records ---
+        now = datetime.utcnow().isoformat() + 'Z'
+
+        if size_fraction >= 1.0:
+            # Full close
+            if target.direction == 'buy':
+                pnl = (exit_price_usd - target.entry_price_usd) * target.size_btc
+            else:
+                pnl = (target.entry_price_usd - exit_price_usd) * target.size_btc
+
+            target.status = 'closed'
+            target.exit_price_usd = exit_price_usd
+            target.exit_timestamp = now
+            target.pnl_usd = round(pnl, 2)
+            target.exit_reason = reason
+            target.order_id = order_id or target.order_id
+            target.execution_mode = exec_mode
+
+            # Move from open to closed
+            self.open_positions = [p for p in self.open_positions if p.trade_id != trade_id]
+            self.closed_positions.append(target)
+
+            print(f'  CLOSED: {trade_id} {target.instrument} PnL=${pnl:.2f} [{reason}]')
+        else:
+            # Partial close -- split the position
+            closed_size = close_size
+            remaining_size = round(target.size_btc - closed_size, 6)
+
+            if target.direction == 'buy':
+                pnl = (exit_price_usd - target.entry_price_usd) * closed_size
+            else:
+                pnl = (target.entry_price_usd - exit_price_usd) * closed_size
+
+            # Create a closed record for the exited portion
+            closed_portion = deepcopy(target)
+            closed_portion.trade_id = f'{trade_id}-PARTIAL-{now[:10]}'
+            closed_portion.size_btc = closed_size
+            closed_portion.status = 'closed'
+            closed_portion.exit_price_usd = exit_price_usd
+            closed_portion.exit_timestamp = now
+            closed_portion.pnl_usd = round(pnl, 2)
+            closed_portion.exit_reason = f'partial_{reason}'
+            closed_portion.order_id = order_id
+            closed_portion.execution_mode = exec_mode
+            self.closed_positions.append(closed_portion)
+
+            # Update the remaining open position
+            target.size_btc = remaining_size
+
+            print(f'  PARTIAL CLOSE: {trade_id} closed={closed_size:.4f} '
+                  f'remaining={remaining_size:.4f} PnL=${pnl:.2f} [{reason}]')
+
+        self._save_paper_trades()
+
+        return {
+            'trade_id': trade_id,
+            'instrument': target.instrument,
+            'close_side': close_side,
+            'close_size': close_size,
+            'exit_price_btc': exit_price_btc,
+            'exit_price_usd': exit_price_usd,
+            'order_id': order_id,
+            'execution_mode': exec_mode,
+            'reason': reason,
+            'pnl_usd': round(pnl, 2) if 'pnl' in dir() else 0,
+        }
 
     # -----------------------------------------------------------------
     # Position monitoring & exit management
